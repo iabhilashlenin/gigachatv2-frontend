@@ -13,12 +13,14 @@ export default function RegisterAndLoginForm() {
   const [password, setPassword] = useState('');
   const [isLoginOrRegister, setIsLoginOrRegister] = useState('login');
   const { setUsername: setLoggedInUsername, setId } = useContext(UserContext);
-
   async function handleSubmit(ev) {
     ev.preventDefault();
     const url = isLoginOrRegister === 'register' ? '/register' : '/login';
     try {
-      const { data } = await axios.post(url, { username, password });
+      const { data } = await axios.post(url, 
+        { username, password }, 
+        { withCredentials: true } // Ensure cookies are sent
+      );
       setLoggedInUsername(username);
       setId(data.id);
     } catch (error) {
